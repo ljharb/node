@@ -527,6 +527,8 @@ taken the name. Currently the built-in modules that requires the `node:` prefix 
 * [`node:test`][]
 * [`node:test/reporters`][]
 
+The list of these modules is exposed as [`module.builtinPrefixOnlyModules`][].
+
 ## Cycles
 
 <!--type=misc-->
@@ -1278,6 +1280,7 @@ This section was moved to
 [`__filename`]: #__filename
 [`import()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import
 [`module.builtinModules`]: module.md#modulebuiltinmodules
+[`module.builtinPrefixOnlyModules`]: module.md#modulebuiltinprefixonlymodules
 [`module.children`]: #modulechildren
 [`module.id`]: #moduleid
 [`module` core module]: module.md

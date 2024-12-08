@@ -75,7 +75,7 @@ const expectedPublicModules = new Set([
 
 if (process.argv[2] === 'child') {
   assert(!process.execArgv.includes('--expose-internals'));
-  process.once('message', ({ allBuiltins }) => {
+  process.once('message', ({ allBuiltins, builtinPrefixOnlyModules }) => {
     const publicModules = new Set();
     for (const id of allBuiltins) {
       if (id.startsWith('internal/')) {
@@ -88,6 +88,7 @@ if (process.argv[2] === 'child') {
       } else {
         require(id);
         publicModules.add(id);
+        require(`node:${id}`);
       }
     }
     assert(allBuiltins.length > publicModules.size);
@@ -98,15 +99,22 @@ if (process.argv[2] === 'child') {
       new Set(require('module').builtinModules)
     );
     assert.deepStrictEqual(publicModules, expectedPublicModules);
+
+    const prefixOnlyModules = new Set();
+    for (const id of builtinPrefixOnlyModules) {
+      require(id);
+      prefixOnlyModules.add(id);
+    }
+    assert.deepStrictEqual(prefixOnlyModules, new Set(require('module').builtinPrefixOnlyModules));
   });
 } else {
   assert(process.execArgv.includes('--expose-internals'));
   const child = fork(__filename, ['child'], {
     execArgv: []
   });
-  const { builtinModules } = require('module');
+  const { builtinModules, builtinPrefixOnlyModules } = require('module');
   // When --expose-internals is on, require('module').builtinModules
   // contains internal modules.
-  const message = { allBuiltins: builtinModules };
+  const message = { allBuiltins: builtinModules, builtinPrefixOnlyModules };
   child.send(message);
 }

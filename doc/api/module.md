@@ -45,6 +45,33 @@ import { builtinModules as builtin } from 'node:module';
 const builtin = require('node:module').builtinModules;
 ```
 
+### `module.builtinPrefixOnlyModules`
+
+<!-- YAML
+added:
+  - ?.?.?
+-->
+
+* {string\[]}
+
+A list of the names of all modules provided by Node.js that require a `node:` prefix.
+Can be used to verify if a module is maintained by a third party or not.
+
+`module` in this context isn't the same object that's provided
+by the [module wrapper][]. To access it, require the `Module` module:
+
+```mjs
+// module.mjs
+// In an ECMAScript module
+import { builtinPrefoxOnlyModules as builtinPrefixOnly } from 'node:module';
+```
+
+```cjs
+// module.cjs
+// In a CommonJS module
+const builtinPrefixOnly = require('node:module').builtinPrefoxOnlyModules;
+```
+
 ### `module.createRequire(filename)`
 
 <!-- YAML
