@@ -32,10 +32,12 @@ testMe._domain.on('error', assert.ifError);
 testMe.complete('import(\'', common.mustCall((error, data) => {
   assert.strictEqual(error, null);
   publicModules.forEach((lib) => {
-    assert(
-      data[0].includes(lib) && data[0].includes(`node:${lib}`),
-      `${lib} not found`,
-    );
+    if (!lib.startsWith('node:')) {
+      assert(
+        data[0].includes(lib) && data[0].includes(`node:${lib}`),
+        `${lib} not found`,
+      );
+    }
   });
   const newModule = 'foobar';
   assert(!builtinModules.includes(newModule));
@@ -55,7 +57,7 @@ testMe.complete("import\t( 'n", common.mustCall((error, data) => {
   // import(...) completions include `node:` URL modules:
   let lastIndex = -1;
 
-  publicModules.forEach((lib, index) => {
+  publicModules.filter((lib) => !lib.startsWith('node:')).forEach((lib, index) => {
     lastIndex = completions.indexOf(`node:${lib}`);
     assert.notStrictEqual(lastIndex, -1);
   });
