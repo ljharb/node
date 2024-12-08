@@ -28,7 +28,7 @@ added:
 A list of the names of all modules provided by Node.js. Can be used to verify
 if a module is maintained by a third party or not.
 
-Note: the list doesn't contain [prefix-only modules][] like `node:test`.
+Note: the list also contains [prefix-only modules][] like `node:test`.
 
 `module` in this context isn't the same object that's provided
 by the [module wrapper][]. To access it, require the `Module` module:
